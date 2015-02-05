@@ -1,0 +1,65 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <FrameLayout 
+        android:id="@+id/fragment_container"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_weight="1"
+        >
+        
+    	    
+    </FrameLayout>
+    
+    <LinearLayout
+        android:id="@+id/bottom_tool_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        
+        <ImageView
+            android:id="@+id/btn_home"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_menu_home"
+            android:background="#06131F"/>
+        
+        <ImageView
+            android:id="@+id/btn_favourite"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_menu_home"
+            android:background="#06131F"/>
+        
+        <ImageView
+            android:id="@+id/btn_upload"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_menu_home"
+            android:background="#A6CCED"/>
+        
+        <ImageView
+            android:id="@+id/btn_location"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_menu_home"
+            android:background="#06131F"/>
+        
+        <ImageView
+            android:id="@+id/btn_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_menu_home"
+            android:background="#06131F"/>
+        
+    </LinearLayout>"
+    
+</LinearLayout>
