@@ -2,8 +2,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
-
+    android:orientation="vertical"
+    android:background="#ffffff" >
+    
     <FrameLayout 
         android:id="@+id/fragment_container"
         android:layout_height="wrap_content"
@@ -41,7 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="60dp"
             android:layout_weight="1"
-            android:src="@drawable/ic_menu_home"
+            android:src="@drawable/ic_btn_speak_now"
             android:background="#A6CCED"/>
         
         <ImageView
@@ -57,9 +58,9 @@
             android:layout_width="wrap_content"
             android:layout_height="60dp"
             android:layout_weight="1"
-            android:src="@drawable/ic_menu_home"
+            android:src="@drawable/ic_menu_cc_am"
             android:background="#06131F"/>
         
-    </LinearLayout>"
+    </LinearLayout>
     
 </LinearLayout>

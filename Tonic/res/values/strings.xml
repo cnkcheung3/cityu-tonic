@@ -3,5 +3,6 @@
 
     <string name="app_name">Tonic</string>
     <string name="hello_world">Hello world!</string>
+    <string name="development_url">http://www.cityutonic.podserver.info/</string>
 
 </resources>
