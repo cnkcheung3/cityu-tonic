@@ -4,14 +4,20 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.android.volley.toolbox.ImageLoader;
 import com.cityu.tonic.R;
 import com.cityu.tonic.R.layout;
 import com.cityu.tonic.model.FeedItem;
+import com.cityu.tonic.request.GetFollowingFeedRequest;
+import com.cityu.tonic.request.GetFollowingFeedRequest.ResponseFeed;
 import com.cityu.tonic.utils.CusMediaController;
+import com.cityu.tonic.utils.NetworkCircleImageView;
+import com.cityu.tonic.utils.VolleySingleton;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnPreparedListener;
@@ -19,6 +25,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,12 +40,13 @@ import android.widget.VideoView;
 
 public class MyHomeFrag extends Fragment{
 	
-	List<FeedItem> mFeedItems;
+	List<ResponseFeed> mFeedItems;
 	FeedAdapter mAdapter;
 	Activity mActivity;
 	ListView mlistView;
 	MediaPlayer mMediaPlayer;
 	MediaController mMediaController;
+	ImageLoader mImageLoader;
 	private Handler handler = new Handler();
 	
 	ImageView playPauseBtn_iv;
@@ -53,12 +61,14 @@ public class MyHomeFrag extends Fragment{
     	View rootView = inflater.inflate(R.layout.frag_home, container, false);
     	mActivity = this.getActivity();
     	mlistView = (ListView) rootView.findViewById(R.id.listView1);
-    	mFeedItems = new ArrayList<FeedItem>();
+    	/*mFeedItems = new ArrayList<FeedItem>();
     	mFeedItems.add(new FeedItem("", "cnk3", "1h", "abc", "5"));
     	mFeedItems.add(new FeedItem("", "cn3", "1h", "abc", "5"));
     	mFeedItems.add(new FeedItem("", "cn3", "1h", "abc", "5"));
     	mFeedItems.add(new FeedItem("", "cn3", "1h", "abc", "5"));
     	mFeedItems.add(new FeedItem("", "cn3", "1h", "abc", "5"));
+    	*/
+    	mFeedItems = new ArrayList<ResponseFeed>();
     	mAdapter = new FeedAdapter(mActivity, 0, 0, mFeedItems);
     	mlistView.setAdapter(mAdapter);
     	
@@ -67,9 +77,34 @@ public class MyHomeFrag extends Fragment{
     	totalTime_tv = (TextView) rootView.findViewById(R.id.total_time_tv);
     	seekbar = (SeekBar) rootView.findViewById(R.id.seekBar1);
     	
+    	mImageLoader = new ImageLoader(VolleySingleton.getInstance(this.getActivity()).getRequestQueue(), 
+        		new ImageLoader.ImageCache() {
+            private final LruCache<String, Bitmap> mCache = new LruCache<String, Bitmap>(10);
+            public void putBitmap(String url, Bitmap bitmap) {
+                mCache.put(url, bitmap);
+            }
+            public Bitmap getBitmap(String url) {
+                return mCache.get(url);
+            }
+        });
+    	
     	prepareMediaPlayer();
     	CusMediaController mc = new CusMediaController(playPauseBtn_iv, curTime_tv, totalTime_tv, seekbar);
     	mc.setMediaPlayer(mMediaPlayer);
+    	
+    	GetFollowingFeedRequest request = new GetFollowingFeedRequest(this.getActivity()){
+
+			@Override
+			protected void onGetFeed(ArrayList<ResponseFeed> responseFeeds) {
+				
+				for(ResponseFeed feed: responseFeeds)
+					mFeedItems.add(feed);
+				
+				mAdapter.notifyDataSetChanged();
+			}
+    		
+    	};
+    	request.makeRequest();
     	
         return rootView;
     }
@@ -108,15 +143,15 @@ public class MyHomeFrag extends Fragment{
 
 	}
     
-    private class FeedAdapter extends ArrayAdapter<FeedItem> {
+    private class FeedAdapter extends ArrayAdapter<ResponseFeed> {
 
     	VideoView myVideoView;
-    	ImageView user_icon_iv;
+    	NetworkCircleImageView user_icon_iv;
     	TextView username_tv;
     	TextView time_tv;
     	TextView like_tv;
 		public FeedAdapter(Context context, int resource,
-				int textViewResourceId, List<FeedItem> objects) {
+				int textViewResourceId, List<ResponseFeed> objects) {
 			super(context, resource, textViewResourceId, objects);
 		}
 
@@ -128,14 +163,17 @@ public class MyHomeFrag extends Fragment{
 		        v = vi.inflate(R.layout.feed_list_item, null);
 		    }
 		    
-		    FeedItem feed = this.getItem(position);
+		    ResponseFeed feed = this.getItem(position);
 		    username_tv = (TextView)v.findViewById(R.id.username_tv);
 		    time_tv = (TextView)v.findViewById(R.id.time_tv);
 		    like_tv = (TextView)v.findViewById(R.id.like_num_tv);
+		    user_icon_iv = (NetworkCircleImageView)v.findViewById(R.id.user_icon_iv);
 		    
-		    username_tv.setText(feed.username);
-		    time_tv.setText(feed.datetime);
-		    like_tv.setText(String.format("%s likes", feed.num_like));
+		    username_tv.setText(feed.ac);
+		    time_tv.setText(feed.ct);
+		    like_tv.setText(String.format("%s likes", feed.like.size()));
+		    String full_path = getResources().getString(R.string.development_url) + "user_pic/" + feed.img;
+		    user_icon_iv.setImageUrl(full_path, mImageLoader);
 		    
 			return v;
 		}

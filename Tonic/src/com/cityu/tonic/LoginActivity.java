@@ -40,15 +40,7 @@ public class LoginActivity extends Activity{
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		this.getActionBar().hide();
 		this.setContentView(R.layout.activity_login_splash);
-	}
-	
-	
-
-	@Override
-	protected void onResume() {
-		// TODO Auto-generated method stub
-		super.onResume();
-
+		
 		runnable = new Runnable(){
 
 			@Override
@@ -81,9 +73,7 @@ public class LoginActivity extends Activity{
 		
 		handler.postDelayed(runnable, 2000);
 	}
-
-
-
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
@@ -134,7 +124,7 @@ public class LoginActivity extends Activity{
 					
 					SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
 					sp.edit().putString(PREF_USER_ID, id).commit();
-					sp.edit().putString(PREF_TOKEN, id).commit();
+					sp.edit().putString(PREF_TOKEN, token).commit();
 					sp.edit().putString(PREF_ACCOUNT, ac).commit();
 					
 					setProgressBarIndeterminateVisibility(false);
@@ -164,7 +154,7 @@ public class LoginActivity extends Activity{
 		}
 	}
 
-
+	
 
 	@Override
 	protected void onStop() {
