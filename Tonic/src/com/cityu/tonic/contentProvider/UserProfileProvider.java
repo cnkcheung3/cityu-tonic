@@ -14,43 +14,37 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.util.Log;
 
-public class AudioFeedProvider extends ContentProvider {
+public class UserProfileProvider extends ContentProvider{
 
-	public static final String PROVIDER_NAME = "com.cityu.tonic.contentProvider.Audio";
+	public static final String PROVIDER_NAME = "com.cityu.tonic.contentProvider.UserProfile";
 	public static final String URL = "content://" + PROVIDER_NAME + "/friends";
 	public static final Uri CONTENT_URI = Uri.parse(URL);
 
 	public static final String ID = "id";
-	public static final String FEED_ID = "feed_id";
 	public static final String USER_ID = "user_id";
 	public static final String USERNAME = "username";
-	public static final String UPDATED_TIME = "updated_time";
-	public static final String CREATED_TIME = "created_time";
-	public static final String AUDIO_URL = "audio_url";
-	public static final String LOCATION = "location";
-	public static final String TITLE = "title";
-	public static final String LIKES = "likes";
-	public static final String LIKED = "liked";
-	public static final String IS_PLAYLIST = "is_playlist";
+	public static final String AUDIO_COUNT = "audio_count";
+	public static final String FOLLOWING_COUNT = "following_count";
+	public static final String FOLLOWER_COUNT = "follower_count";
+	public static final String PROPIC_URL = "propic_url";
+	public static final String DES = "des";
+	public static final String RELATION = "relation";
 
 	private SQLiteDatabase database;
-	static final String DATABASE_NAME = "AudioFeed";
-	static final String TABLE_NAME = "Feed";
-    static final int DATABASE_VERSION = 1;
-	static final String CREATE_TABLE =
+	public static final String DATABASE_NAME = "UserProfile";
+	public static final String TABLE_NAME = "userProfile";
+	public static final int DATABASE_VERSION = 1;
+	public static final String CREATE_TABLE =
 			" CREATE TABLE " + TABLE_NAME +
 			" (id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-			" feed_id TEXT NOT NULL, " +
 			" user_id TEXT NOT NULL, " +
 			" username TEXT NOT NULL, " +
-			" updated_time TEXT NOT NULL, " +
-			" created_time TEXT NOT NULL, " +
-			" audio_url TEXT NOT NULL, " +
-			" location TEXT, " +
-			" likes TEXT, " +
-			" liked TEXT, " +
-			" title TEXT, " +
-			" is_playlist TEXT);";
+			" audio_count TEXT NOT NULL, " +
+			" following_count TEXT NOT NULL, " +
+			" follower_count TEXT NOT NULL, " +
+			" propic_url TEXT, " +
+			" relation TEXT, " +
+			" des TEXT); ";
 	
 	DBHelper dbHelper;
 	private static HashMap<String, String> BirthMap;
@@ -137,6 +131,5 @@ public class AudioFeedProvider extends ContentProvider {
 		 getContext().getContentResolver().notifyChange(uri, null);
 		 return count;
 	}
-
 
 }

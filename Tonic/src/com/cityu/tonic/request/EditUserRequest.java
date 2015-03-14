@@ -1,15 +1,8 @@
 package com.cityu.tonic.request;
 
-import java.io.FileOutputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.widget.ImageView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -18,36 +11,28 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.cityu.tonic.LoginActivity;
 import com.cityu.tonic.R;
-import com.cityu.tonic.model.ResponseFeed;
+import com.cityu.tonic.model.HttpResponse;
 import com.cityu.tonic.utils.VolleySingleton;
 import com.google.gson.Gson;
 
-public class GetFollowingFeedRequest extends BaseUpdateFeedProviderRequest {
-	
+public class EditUserRequest {
 	Context mContext;
 	RequestBody requestBody;
-	
-	public GetFollowingFeedRequest(Context context)
+	public EditUserRequest(String des, Context context)
 	{
-		super(context);
 		requestBody = new RequestBody();
 		requestBody.id = PreferenceManager.getDefaultSharedPreferences(context).getString(LoginActivity.PREF_USER_ID, "");
 		requestBody.token = PreferenceManager.getDefaultSharedPreferences(context).getString(LoginActivity.PREF_TOKEN, "");
+		requestBody.des = des;
 		mContext = context;
 	}
 	
-	public GetFollowingFeedRequest(Context context, String time)
-	{
-		this(context);
-		requestBody.time = time;
-	}
 	
-	public void makeRequest()
-	{
+	public void makeRequest(){
 		final String requestJson = (new Gson()).toJson(requestBody);
 		Log.v("ken", "request Json: "+requestJson);
 		
-		String url = mContext.getString(R.string.development_url)+"index.php?type=getAudioFeed";
+		String url = mContext.getString(R.string.development_url)+"index.php?type=editUser";
 
 		// Request a string response from the provided URL.
 		StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
@@ -55,14 +40,13 @@ public class GetFollowingFeedRequest extends BaseUpdateFeedProviderRequest {
 			@Override
 			public void onResponse(String response) {
 				// TODO Auto-generated method stub
-				Log.v("ken", "getAudioFeed response: "+response);
-				ResponseFeed[] responseFeeds = (new Gson()).fromJson(response, ResponseFeed[].class);
+				Log.v("ken", "edit user response: "+response);
 				
-				ArrayList<ResponseFeed> lists = new ArrayList<ResponseFeed>(Arrays.asList(responseFeeds));
-				
-				onGetFeed(lists);
-				
-				updateContentProvider(lists);
+				ResponseBody responseBody = (new Gson()).fromJson(response, ResponseBody.class);
+				onGetResponse(responseBody);
+				//ResponseUserProfile responseUserProfile = (new Gson()).fromJson(response, ResponseUserProfile.class);
+				//updateContentProvider(responseUserProfile);
+				//onGetUserProfile(responseUserProfile);
 			}
 		}, new Response.ErrorListener() {
 		    @Override
@@ -81,20 +65,17 @@ public class GetFollowingFeedRequest extends BaseUpdateFeedProviderRequest {
 		// Add the request to the RequestQueue.
 		//queue.add(stringRequest);
 		VolleySingleton.getInstance(mContext).addToRequestQueue(stringRequest);
-		
 	}
-	
-	protected void onGetFeed(ArrayList<ResponseFeed> responseFeeds){}
 	
 	public class RequestBody{
 		String id;
 		String token;
-		String time;
-		ArrayList<Update> update = new ArrayList<Update>();
-		public class Update{
-			public String fid;
-			public String time;
-		}
+		String des;
 	}
 	
+	public class ResponseBody extends HttpResponse{
+		public String relation;
+	}
+	
+	protected void onGetResponse(ResponseBody responseBody){};
 }

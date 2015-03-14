@@ -21,13 +21,11 @@ public class AudioFileChooseHandler {
 	}
 	
 	public void onActivityResult(int requestCode,int resultCode,Intent data){
-
 	  if(requestCode == 1){
-
 	    if(resultCode == Activity.RESULT_OK){
-
 	        //the selected audio.
 	        Uri uri = data.getData(); 
+	        (new AudioFileUploadHandler(mActivity)).uploadAudioFile(uri);
 	        Log.v("ken", "selected audio url: "+ uri);
 	    }
 	  }

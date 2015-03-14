@@ -34,6 +34,12 @@
         <provider android:name="com.cityu.tonic.contentProvider.AudioFeedProvider"
 				  android:authorities="com.cityu.tonic.contentProvider.Audio">
 		 </provider>
+		 <provider android:name="com.cityu.tonic.contentProvider.UserProfileProvider"
+				  android:authorities="com.cityu.tonic.contentProvider.UserProfile">
+		 </provider>
+		 <provider android:name="com.cityu.tonic.contentProvider.AudioFeedProvider"
+				  android:authorities="com.cityu.tonic.contentProvider.Audio">
+		 </provider>
         
     </application>
 

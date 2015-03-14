@@ -4,5 +4,17 @@
     <string name="app_name">Tonic</string>
     <string name="hello_world">Hello world!</string>
     <string name="development_url">http://www.cityutonic.podserver.info/</string>
-
+    
+    
+    <string name="user_profile_audio_count_default">-</string>
+    <string name="user_profile_following_count_default">-</string>
+    <string name="user_profile_follower_count_default">-</string>
+    <string name="user_profile_user_name_default">-</string>
+    <string name="user_profile_user_des_default">-</string>
+	<string name="user_profile_relation_default">-</string>
+	<string name="user_profile_relation_me">Edit your profile</string>
+	<string name="user_profile_relation_none">Follow</string>
+	<string name="user_profile_relation_request">Requested</string>
+	<string name="user_profile_relation_follow">Following</string>
+	
 </resources>
